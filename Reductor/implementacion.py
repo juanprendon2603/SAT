@@ -9,14 +9,14 @@ def aumentar(
     lista = []
     for i in range(x - n):
         for j in range(len(SAT)):
-            variables += 1
+            variables = variables + 1
             p = (SAT[j])[:]
             q = (SAT[j])[:]
 
             p.append(variables)
             lista.append(p)
 
-            q.append(-1 * variables)
+            q.append(variables * (-1))
             lista.append(q)
 
         SAT = lista[:]
@@ -58,28 +58,22 @@ def sat_3sat(
     for clausula in SAT:
         if n == 1:
             lista.append([clausula[0], variables + 1, variables + 2])
-            lista.append([clausula[0], variables + 1, -1 * (variables
-                         + 2)])
-            lista.append([clausula[0], -1 * (variables + 1), variables
-                         + 2])
-            lista.append([clausula[0], -1 * (variables + 1), -1
-                         * (variables + 2)])
-            variables += 2
+            lista.append([clausula[0], variables + 1, (variables + 2) * (-1)])
+            lista.append([clausula[0], (variables + 1) * (-1), variables + 2])
+            lista.append([clausula[0], (variables + 1) * (-1), (variables + 2) * (-1)])
+            variables = variables + 2
         if n == 2:
             lista.append([clausula[0], clausula[1], variables + 1])
-            lista.append([clausula[0], clausula[1], -1 * (variables
-                         + 1)])
-            variables += 1
+            lista.append([clausula[0], clausula[1], (variables + 1) * (-1)])
+            variables = variables + 1
         if n == 3:
             lista.append(clausula)
         else:
             lista.append([clausula[0], clausula[1], variables + 1])
             for i in range(2, n - 2):
-                lista.append([-1 * (variables + 1), clausula[i],
-                             variables + 2])
-                variables += 1
-            lista.append([-1 * (variables + 1), clausula[n - 2],
-                         clausula[n - 1]])
-            variables += 1
+                lista.append([(variables + 1) * (-1), clausula[i], variables + 2])
+                variables = variables + 1
+            lista.append([(variables + 1) * (-1), clausula[n - 2], clausula[n - 1]])
+            variables = variables + 1
 
     return aumentar(lista, 3, x, variables)
